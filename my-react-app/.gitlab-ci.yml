@@ -1,0 +1,28 @@
+image: node:21
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install
+
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - build/
+
+deploy:
+  stage: deploy
+  script:
+    - apt-get update -y
+    - apt-get install curl -y
+    - curl -s https://cli.netlify.com/download/latest | bash
+    - netlify deploy --prod --dir=build --auth=nfp_diSnycMxxN1ZZzCZojPTTRDQKBHg8Zi25bbc --site=ab12f1d4-5e0b-4aea-abac-34c3683b637e
